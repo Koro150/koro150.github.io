@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Attendance QR</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:radial-gradient(ellipse at 50% 35%,#1b1426 0%,#0c0a10 70%);color:#f1f0f7;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+.wrap{max-width:480px;margin:0 auto;padding:20px}
+h1{font-size:22px;margin:4px 0 14px}
+input{width:100%;padding:12px;border:1px solid #2e2b3d;border-radius:12px;background:#17141f;color:#f1f0f7;margin-bottom:8px;font-size:15px}
+button{font:inherit;cursor:pointer}
+.pri{background:#7c5cff;color:#fff;border:0;border-radius:12px;padding:10px 16px}
+ul{list-style:none;margin:10px 0 0;padding:0}
+li{display:flex;justify-content:space-between;align-items:center;padding:14px;border:1px solid #2a2638;background:#15121d;border-radius:14px;margin-bottom:8px;cursor:pointer}
+li:hover{border-color:#7c5cff}
+.x{background:none;border:0;color:#8b89a0;padding:2px 8px}
+details{margin-top:14px;color:#9a98aa}
+summary{cursor:pointer}
+#view{display:none;text-align:center;padding-top:10px}
+.back{background:none;border:0;color:#b9a8ff;font-size:15px;float:left;padding:6px 0}
+#nm{clear:both;font-size:20px;font-weight:600;padding:12px 0 18px}
+#card{background:#fff;border-radius:28px;padding:22px;display:inline-block;box-shadow:0 0 60px rgba(124,92,255,.35)}
+#qrbox{display:block;line-height:0}
+#qrbox img,#qrbox canvas{display:block;max-width:100%;height:auto}
+#pill{margin:26px auto 0;max-width:420px;display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #5a47a8;border-radius:28px;padding:16px 20px;background:#15121d;text-align:left}
+#val{font-weight:600;font-size:17px;word-break:break-all;line-height:1.35}
+.gh{margin:18px 4px 8px;color:#b9a8ff;font-weight:600;font-size:14px;display:flex;justify-content:space-between;cursor:default}
+.gh small{color:#8b89a0;font-weight:400}
+.ok{background:#173a2a;color:#5be3a0;border-radius:20px;padding:3px 10px;font-size:12px;margin-right:6px;cursor:pointer}
+.rt{display:flex;align-items:center}
+.reset{background:none;border:1px solid #2e2b3d;color:#9a98aa;border-radius:12px;padding:8px 12px;margin-top:14px}
+select{width:100%;padding:12px;border:1px solid #2e2b3d;border-radius:12px;background:#17141f;color:#f1f0f7;margin-bottom:8px;font-size:15px}
+#cp{background:none;border:0;padding:0;color:#9b7dff;line-height:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div id="home">
+  <h1>Attendance QR codes</h1>
+  <input id="search" placeholder="Search name...">
+  <ul id="list" style="margin-top:0"></ul>
+  <button class="reset" id="reset">Reset attendance</button>
+  <details><summary>Add a person</summary>
+    <div style="margin-top:10px">
+      <input id="an" placeholder="Name">
+      <input id="ai" placeholder="ID (e.g. e5cb0336-d58d-...)">
+      <select id="ag"><option>A1</option><option>A2</option><option>A3</option><option>A4</option><option>B1</option><option selected>B2</option><option>B3</option><option>B4</option></select>
+      <button class="pri" id="add">Add</button>
+    </div>
+  </details>
+</div>
+<div id="view">
+  <button class="back" id="back">&larr; Back</button>
+  <div id="nm"></div>
+  <div id="card"><div id="qrbox"></div></div>
+  <div id="pill"><span id="val"></span>
+    <button id="cp" title="Copy ID"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></button>
+  </div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+var DEF=[["salah","e5cb0336-d58d-5687-a6b1-6e83e812ffc2"],["kassab","b14199d8-d9ea-52db-8c11-26e0255a20d7"],["hany","c90d1ac0-b73e-5663-be16-2b1dc6fa71b4"],["moataz","766af4e2-32c4-5080-925c-9c9adfc75323"],["abdelrahman","6f42d98c-6905-5ca9-929d-02cd0b30d5b1"],["Essam","2fccea27-dd2d-52af-bfd6-a81e0abf3198"],["karim","28f884c6-1086-5e72-a5ce-d91b3cc5e3e3"],["Ziad Yasser","f715b286-d4ea-5950-94cc-b59a9763336f"],["ziad osama","b65f3492-2fb4-5d20-a514-bf98f6421f8a"],["hesham","f5b6947b-5428-55ae-a0cf-e9b1cf11437f"],["sameh","42e824be-2c15-5730-9b8f-81b96e6b58c4"],["Helal","08832835-8f4c-5636-bf4f-07e267371278"],["Aboelwafa","2ccbb57b-6615-5f2a-879e-dfc1d00b51cd"]].map(function(p){return{name:p[0],id:p[1]}});
+var K="att_people_v1",people=DEF.slice(),sel=null,qr=null;
+try{var s=localStorage.getItem(K);if(s){var p=JSON.parse(s);if(Array.isArray(p)&&p.length)people=p}}catch(e){}
+try{if(!localStorage.getItem("att_helal")){if(!people.some(function(x){return x.id==="08832835-8f4c-5636-bf4f-07e267371278"})){people.push({name:"Helal",id:"08832835-8f4c-5636-bf4f-07e267371278"});save()}localStorage.setItem("att_helal","1")}}catch(e){}
+try{if(!localStorage.getItem("att_aboelwafa")){if(!people.some(function(x){return x.id==="2ccbb57b-6615-5f2a-879e-dfc1d00b51cd"})){people.push({name:"Aboelwafa",id:"2ccbb57b-6615-5f2a-879e-dfc1d00b51cd"});save()}localStorage.setItem("att_aboelwafa","1")}}catch(e){}
+var GM={"salah":"A1","essam":"A1","hesham":"A1","moataz":"A1","ziad yasser":"A3","ziad osama":"A3","abdelrahman":"A4","helal":"B1"},GO=["A1","A2","A3","A4","B1","B2","B3","B4"],done={};
+try{done=JSON.parse(localStorage.getItem("att_done_v1"))||{}}catch(e){done={}}
+function saveDone(){try{localStorage.setItem("att_done_v1",JSON.stringify(done))}catch(e){}}
+function grp(p){return p.group||GM[p.name.toLowerCase()]||"B2"}
+function save(){try{localStorage.setItem(K,JSON.stringify(people))}catch(e){}}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function render(){
+  var q=document.getElementById("search").value.toLowerCase(),ul=document.getElementById("list");
+  ul.innerHTML="";
+  GO.forEach(function(g){
+    var m=[];people.forEach(function(p,i){if(grp(p)===g)m.push(i)});
+    if(!m.length)return;
+    var shown=m.filter(function(i){return !q||people[i].name.toLowerCase().indexOf(q)>=0});
+    if(!shown.length)return;
+    var n=m.filter(function(i){return done[people[i].id]}).length;
+    var h=document.createElement("li");h.className="gh";h.style.cssText="border:0;background:none;padding:0";
+    h.innerHTML="<span>"+g+"</span><small>"+n+"/"+m.length+" attended</small>";
+    ul.appendChild(h);
+    shown.forEach(function(i){
+      var p=people[i],li=document.createElement("li");
+      li.innerHTML="<span>"+esc(p.name)+"</span><span class='rt'>"+(done[p.id]?"<span class='ok' title='Tap to unmark'>Attended \u2713</span>":"")+"<button class='x' title='Delete'>\u2715</button></span>";
+      li.onclick=function(){show(i)};
+      var ok=li.querySelector(".ok");if(ok)ok.onclick=function(e){e.stopPropagation();delete done[p.id];saveDone();render()};
+      li.querySelector(".x").onclick=function(e){e.stopPropagation();if(confirm("Delete "+p.name+"?")){people.splice(i,1);save();render()}};
+      ul.appendChild(li);
+    });
+  });
+}
+function show(i){
+  sel=i;var p=people[i],v="att-"+p.id;
+  document.getElementById("nm").textContent=p.name;
+  var b=document.getElementById("qrbox");b.innerHTML="";
+  qr=new QRCode(b,{text:v,width:260,height:260,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+  document.getElementById("val").textContent=p.id;
+  document.getElementById("home").style.display="none";
+  document.getElementById("view").style.display="block";
+  window.scrollTo(0,0);
+}
+document.getElementById("back").onclick=function(){if(sel!==null&&people[sel]){done[people[sel].id]=1;saveDone();render()}document.getElementById("view").style.display="none";document.getElementById("home").style.display="block"};
+document.getElementById("cp").onclick=function(){try{navigator.clipboard.writeText(people[sel].id)}catch(e){}};
+document.getElementById("search").oninput=render;
+document.getElementById("reset").onclick=function(){if(confirm("Clear all attended marks?")){done={};saveDone();render()}};
+document.getElementById("add").onclick=function(){
+  var n=document.getElementById("an").value.trim(),d=document.getElementById("ai").value.trim();
+  if(!n||!d)return;
+  people.push({name:n,id:d,group:document.getElementById("ag").value});save();
+  document.getElementById("an").value="";document.getElementById("ai").value="";
+  render();show(people.length-1);
+};
+render();
+</script>
+</body>
+</html>
